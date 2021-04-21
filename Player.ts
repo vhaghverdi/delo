@@ -7,16 +7,25 @@ export class Player {
   private games: Game[] = [];
 
   constructor(rating = 1500, readonly id = uuid.v4.generate()) {
+    if (rating <= 0) {
+      throw new Error("Player rating must be a positive number.");
+    }
+
     this.pre = rating;
     this.post = rating;
   }
 
   get rating() {
-    return this.post.toFixed(0);
+    return this.post;
   }
 
   addGame(game: Game) {
     this.games.push(game);
+  }
+
+  reset() {
+    this.games = [];
+    this.pre = this.post;
   }
 
   updateRating(k: number) {

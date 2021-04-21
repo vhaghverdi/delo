@@ -1,7 +1,20 @@
 import { Period, Player, Outcome } from "./mod.ts";
 import { uuid, asserts } from "./deps.ts";
 
-Deno.test("Update player rating after a period of games", () => {
+Deno.test("Outcome must be 1, 0.5, or 0", () => {
+  asserts.assertThrows(() => {
+    const player1 = new Player();
+    const player2 = new Player();
+    const period = new Period();
+    period.addGame(player1, player2, 0.3);
+  });
+});
+
+Deno.test("Player rating must be positive", () => {
+  asserts.assertThrows(() => new Player(-1200));
+});
+
+Deno.test("Update player ratings after a period of games", () => {
   const players: { [key: string]: Player } = {
     A: new Player(1613, uuid.v4.generate()),
     B: new Player(1609, uuid.v4.generate()),
@@ -23,5 +36,5 @@ Deno.test("Update player rating after a period of games", () => {
   games.forEach((game) => period.addGame(...game));
   period.calculate();
 
-  asserts.assertEquals(players.A.rating, "1601");
+  asserts.assertEquals(players.A.rating.toFixed(0), "1601");
 });
