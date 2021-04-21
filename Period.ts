@@ -1,7 +1,7 @@
-import Game, { Outcome } from "./Game.ts";
-import Player from "./Player.ts";
+import { Game, Outcome } from "./Game.ts";
+import { Player } from "./Player.ts";
 
-export default class Period {
+export class Period {
   private playerMap: Map<string, Player> = new Map();
 
   constructor(private k = 24) {}

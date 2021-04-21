@@ -1,21 +1,14 @@
-import Game, { Outcome } from "./Game.ts";
-import { uuid } from "../deps.ts";
+import { Game } from "./Game.ts";
+import { uuid } from "./deps.ts";
 
-export default class Player {
-  readonly id: string;
+export class Player {
   private pre: number;
   private post: number;
-  private games: Game[];
+  private games: Game[] = [];
 
-  constructor(id: string, rating: number) {
-    this.id = id;
+  constructor(rating = 1500, readonly id = uuid.v4.generate()) {
     this.pre = rating;
     this.post = rating;
-    this.games = [];
-  }
-
-  static DefaultPlayer(): Player {
-    return new Player(uuid.v4.generate(), 1500);
   }
 
   get rating() {
@@ -30,7 +23,7 @@ export default class Player {
     this.post += k * (this.totalScore() - this.totalExpectedScore());
   }
 
-  private expectedScore(game: Game): Outcome {
+  private expectedScore(game: Game): number {
     return 1 / (1 + Math.pow(10, (game.opponent(this).pre - this.pre) / 400));
   }
 
